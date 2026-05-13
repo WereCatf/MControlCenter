@@ -467,14 +467,23 @@ void Operate::setFan2TempSettings(QVector<int> value) const {
 void Operate::setFanMode(int value) const {
     if (helper.getValue(fanModeAddress) == fanModeAdvanced)
         return;
-    helper.putValue(fanModeAddress, value);
+    if (msiEcHelper.hasFanMode())
+        msiEcHelper.setFanMode(fan_mode(value));
+    else
+        helper.putValue(fanModeAddress, value);
 }
 
 void Operate::setFanModeAdvanced(bool enabled) const {
     if (enabled)
-        helper.putValue(fanModeAddress, fanModeAdvanced);
+        if (msiEcHelper.hasFanMode())
+            msiEcHelper.setFanMode(fan_mode::advanced_fan_mode);
+        else
+            helper.putValue(fanModeAddress, fanModeAdvanced);
     else
-        helper.putValue(fanModeAddress, fanModeAuto);
+        if (msiEcHelper.hasFanMode())
+            msiEcHelper.setFanMode(fan_mode::auto_fan_mode);
+        else
+            helper.putValue(fanModeAddress, fanModeAuto);
     Settings::setValue(settingsGroup + "fanModeAdvanced", enabled);
 }
 
