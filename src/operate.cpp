@@ -565,8 +565,7 @@ void Operate::loadSettings() const {
 
 void Operate::handleWakeEvent() const {
     Settings s;
-    if (s.isValueExist(settingsGroup + "UserMode"))
-    {
+    if (s.isValueExist(settingsGroup + "UserMode")) {
         QString value = s.getValue(settingsGroup + "UserMode").toString();
         if (value == "balanced_mode")
             setUserMode(user_mode::balanced_mode);
