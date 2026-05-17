@@ -36,3 +36,4 @@
 /scripts/*.tar.gz
 /scripts/MControlCenter-*-bin/
 .vscode
+src/i18n/*.qm
