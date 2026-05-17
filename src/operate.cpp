@@ -564,18 +564,7 @@ void Operate::loadSettings() const {
 }
 
 void Operate::handleWakeEvent() const {
-    Settings s;
-    if (s.isValueExist(settingsGroup + "UserMode")) {
-        QString value = s.getValue(settingsGroup + "UserMode").toString();
-        if (value == "balanced_mode")
-            setUserMode(user_mode::balanced_mode);
-        else if (value == "performance_mode")
-            setUserMode(user_mode::performance_mode);
-        else if (value == "silent_mode")
-            setUserMode(user_mode::silent_mode);
-        else if (value == "super_battery_mode")
-            setUserMode(user_mode::super_battery_mode);
-    }
+    loadSettings();
 }
 
 int Operate::detectFan1Address() const {
