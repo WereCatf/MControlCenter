@@ -24,8 +24,9 @@
 
 using BYTE = unsigned char;
 
-class Helper : public QObject {
-Q_OBJECT
+class Helper : public QObject
+{
+    Q_OBJECT
 public:
     Helper();
 
@@ -39,8 +40,9 @@ public:
     void putValue(int address, int value);
     void quit();
     QDBusInterface *iface;
+
 private:
-    void printError(QDBusError const & error) const;
+    void printError(QDBusError const &error) const;
 private slots:
     void callFinishedSlot(QDBusPendingCallWatcher *call);
 };

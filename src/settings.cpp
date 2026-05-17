@@ -22,14 +22,17 @@
 
 QSettings settings("MControlCenter");
 
-QVariant Settings::getValue(const QString &key) {
+QVariant Settings::getValue(const QString &key)
+{
     return settings.value(key);
 }
 
-QVector<int> Settings::getValueVector(const QString &key) {
+QVector<int> Settings::getValueVector(const QString &key)
+{
     QVector<int> value;
     std::stringstream string_stream(settings.value(key).toString().toStdString());
-    while (string_stream.good()) {
+    while (string_stream.good())
+    {
         std::string a;
         getline(string_stream, a, '|');
         value.append(std::stoi(a));
@@ -37,16 +40,19 @@ QVector<int> Settings::getValueVector(const QString &key) {
     return value;
 }
 
-void Settings::setValue(const QString &key, const QVariant &value) {
+void Settings::setValue(const QString &key, const QVariant &value)
+{
     if (settings.value(key) == value)
         return;
     settings.setValue(key, value);
     settings.sync();
 }
 
-void Settings::setValue(const QString &key, const QVector<int> &value) {
+void Settings::setValue(const QString &key, const QVector<int> &value)
+{
     QString resValue;
-    for (int i = 0; i < value.size(); i++) {
+    for (int i = 0; i < value.size(); i++)
+    {
         resValue.append(QString::number(value[i]));
         if (i < value.size() - 1)
             resValue.append("|");
@@ -57,7 +63,8 @@ void Settings::setValue(const QString &key, const QVector<int> &value) {
     settings.sync();
 }
 
-bool Settings::isValueExist(const QString &key) {
+bool Settings::isValueExist(const QString &key)
+{
     if (settings.contains(key))
         return true;
     return false;

@@ -27,11 +27,15 @@
 #include <QDBusPendingCallWatcher>
 
 QT_BEGIN_NAMESPACE
-namespace Ui { class MainWindow; }
+namespace Ui
+{
+    class MainWindow;
+}
 QT_END_NAMESPACE
 
-class MainWindow : public QMainWindow {
-Q_OBJECT
+class MainWindow : public QMainWindow
+{
+    Q_OBJECT
 
 public:
     explicit MainWindow(QWidget *parent = nullptr);
@@ -100,7 +104,8 @@ private:
     void iconActivated(QSystemTrayIcon::ActivationReason reason);
     void saveStateRequest(QSessionManager &sessionManager);
 
-    QSystemTrayIcon *trayIcon = nullptr;;
+    QSystemTrayIcon *trayIcon = nullptr;
+    ;
     QMenu *trayIconMenu = nullptr;
     QMenu *modeTrayMenu = nullptr;
     QMenu *fanTrayMenu = nullptr;

@@ -19,10 +19,10 @@
 #ifndef MCONTROLCENTER_SETTINGS_H
 #define MCONTROLCENTER_SETTINGS_H
 
-
 #include <QString>
 
-class Settings {
+class Settings
+{
 public:
     QVariant getValue(const QString &key);
     QVector<int> getValueVector(const QString &key);
@@ -31,5 +31,4 @@ public:
     bool isValueExist(const QString &key);
 };
 
-
-#endif //MCONTROLCENTER_SETTINGS_H
+#endif // MCONTROLCENTER_SETTINGS_H

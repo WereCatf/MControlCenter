@@ -46,30 +46,38 @@ const QString msi_ec_bat1_status = msi_ec_bat1 + "/status";
 // /sys/class/leds/platform::<led_name>/brightness
 const QString msi_ec_kbd_backlight_brightness = "/sys/class/leds/msiacpi::kbd_backlight/brightness";
 
-QString MsiEc::readFile(QString path) const {
-    if (QFile file(path); file.exists() && file.open(QIODevice::ReadOnly)) {
+QString MsiEc::readFile(QString path) const
+{
+    if (QFile file(path); file.exists() && file.open(QIODevice::ReadOnly))
+    {
         // Remove only the last '\n'
         return file.readAll().chopped(1);
     }
     return "";
 }
 
-bool MsiEc::readFileOnOff(QString path) const {
+bool MsiEc::readFileOnOff(QString path) const
+{
     return readFile(path) == "on";
 }
 
-void MsiEc::writeFile(QString path, QString value) const {
-    if (QFile file(path); file.exists() && file.open(QIODevice::WriteOnly)) {
+void MsiEc::writeFile(QString path, QString value) const
+{
+    if (QFile file(path); file.exists() && file.open(QIODevice::WriteOnly))
+    {
         file.write(value.toUtf8());
     }
 }
 
-void MsiEc::writeFileOnOff(QString path, bool on) const {
+void MsiEc::writeFileOnOff(QString path, bool on) const
+{
     writeFile(path, on ? "on" : "off");
 }
 
-bool MsiEc::isMsiEcModuleLoaded() const {
-    if (QFile::exists(msi_ec_fw_version)) {
+bool MsiEc::isMsiEcModuleLoaded() const
+{
+    if (QFile::exists(msi_ec_fw_version))
+    {
         return true;
     }
     fprintf(stderr, "%s\n", qPrintable("The msi_ec kernel module is not loaded"));
@@ -78,58 +86,72 @@ bool MsiEc::isMsiEcModuleLoaded() const {
 
 //////////////// webcam ////////////////
 
-bool MsiEc::hasWebcam() const {
+bool MsiEc::hasWebcam() const
+{
     return QFile::exists(msi_ec_webcam);
 }
-bool MsiEc::getWebcam() const {
+bool MsiEc::getWebcam() const
+{
     return readFileOnOff(msi_ec_webcam);
 }
-void MsiEc::setWebcam(bool enable) const {
+void MsiEc::setWebcam(bool enable) const
+{
     writeFileOnOff(msi_ec_webcam, enable);
 }
 
 //////////////// webcam_block ////////////////
 
-bool MsiEc::hasWebcamBlock() const {
+bool MsiEc::hasWebcamBlock() const
+{
     return QFile::exists(msi_ec_webcam_block);
 }
-bool MsiEc::getWebcamBlock() const {
+bool MsiEc::getWebcamBlock() const
+{
     return readFileOnOff(msi_ec_webcam_block);
 }
-void MsiEc::setWebcamBlock(bool enable) const {
+void MsiEc::setWebcamBlock(bool enable) const
+{
     writeFileOnOff(msi_ec_webcam_block, enable);
 }
 
 //////////////// fn_key ////////////////
 
-bool MsiEc::hasFnKey() const {
+bool MsiEc::hasFnKey() const
+{
     return QFile::exists(msi_ec_fn_key);
 }
-QString MsiEc::getFnKey() const {
+QString MsiEc::getFnKey() const
+{
     return readFile(msi_ec_fn_key);
 }
-void MsiEc::setFnKey(QString side) const {
+void MsiEc::setFnKey(QString side) const
+{
     writeFile(msi_ec_fn_key, side);
 }
 
 //////////////// win_key ////////////////
 
-bool MsiEc::hasWinKey() const {
+bool MsiEc::hasWinKey() const
+{
     return QFile::exists(msi_ec_win_key);
 }
-QString MsiEc::getWinKey() const {
+QString MsiEc::getWinKey() const
+{
     return readFile(msi_ec_win_key);
 }
-void MsiEc::setWinKey(QString side) const {
+void MsiEc::setWinKey(QString side) const
+{
     writeFile(msi_ec_win_key, side);
 }
 
 //////////////// fn_win_swap ////////////////
 
-bool MsiEc::hasFnWinSwap() const {
+bool MsiEc::hasFnWinSwap() const
+{
     return hasFnKey();
 }
-bool MsiEc::getFnWinSwap() const {
+bool MsiEc::getFnWinSwap() const
+{
     // here we only want to know if the keys are swapped or not
     // we don't care if it is left or right
     // swap may be inverted on some devices
@@ -137,174 +159,215 @@ bool MsiEc::getFnWinSwap() const {
     // (e.g. with a file fn_win_swap)
     return getFnKey() == "left";
 }
-void MsiEc::setFnWinSwap(bool swap) const {
+void MsiEc::setFnWinSwap(bool swap) const
+{
     setFnKey(swap ? "left" : "right");
 }
 
 //////////////// cooler_boost ////////////////
 
-bool MsiEc::hasCoolerBoost() const {
+bool MsiEc::hasCoolerBoost() const
+{
     return QFile::exists(msi_ec_cooler_boost);
 }
-bool MsiEc::getCoolerBoost() const {
+bool MsiEc::getCoolerBoost() const
+{
     return readFileOnOff(msi_ec_cooler_boost);
 }
-void MsiEc::setCoolerBoost(bool enable) const {
+void MsiEc::setCoolerBoost(bool enable) const
+{
     writeFileOnOff(msi_ec_cooler_boost, enable);
 }
 
 //////////////// shift_mode ////////////////
 
-bool MsiEc::hasShiftMode() const {
+bool MsiEc::hasShiftMode() const
+{
     return QFile::exists(msi_ec_shift_mode);
 }
-QString MsiEc::getAvailableShiftModes() const {
+QString MsiEc::getAvailableShiftModes() const
+{
     return readFile(msi_ec_available_shift_modes);
 }
-QString MsiEc::getShiftMode() const {
+QString MsiEc::getShiftMode() const
+{
     return readFile(msi_ec_shift_mode);
 }
-void MsiEc::setShiftMode(QString mode) const {
+void MsiEc::setShiftMode(QString mode) const
+{
     writeFile(msi_ec_shift_mode, mode);
 }
 
 //////////////// super_battery ////////////////
 
-bool MsiEc::hasSuperBattery() const {
+bool MsiEc::hasSuperBattery() const
+{
     return QFile::exists(msi_ec_super_battery);
 }
-bool MsiEc::getSuperBattery() const {
+bool MsiEc::getSuperBattery() const
+{
     return readFileOnOff(msi_ec_super_battery);
 }
-void MsiEc::setSuperBattery(bool enable) const {
+void MsiEc::setSuperBattery(bool enable) const
+{
     writeFileOnOff(msi_ec_super_battery, enable);
 }
 
 //////////////// fan_mode ////////////////
 
-bool MsiEc::hasFanMode() const {
+bool MsiEc::hasFanMode() const
+{
     return QFile::exists(msi_ec_fan_mode);
 }
-QString MsiEc::getAvailableFanModes() const {
+QString MsiEc::getAvailableFanModes() const
+{
     return readFile(msi_ec_available_fan_modes);
 }
-QString MsiEc::getFanMode() const {
+QString MsiEc::getFanMode() const
+{
     return readFile(msi_ec_fan_mode);
 }
-void MsiEc::setFanMode(QString mode) const {
+void MsiEc::setFanMode(QString mode) const
+{
     writeFile(msi_ec_fan_mode, mode);
 }
 
 //////////////// fw_version ////////////////
 
-QString MsiEc::getFWVersion() const {
+QString MsiEc::getFWVersion() const
+{
     return readFile(msi_ec_fw_version);
 }
 
 //////////////// fw_release_date ////////////////
 
-QString MsiEc::getFWReleaseDate() const {
+QString MsiEc::getFWReleaseDate() const
+{
     return readFile(msi_ec_fw_release_date);
 }
 
 //////////////// CPU ////////////////
 
 // cpu/realtime_temperature 0-100 (celsius scale)
-bool MsiEc::hasCPURealtimeTemperature() const {
+bool MsiEc::hasCPURealtimeTemperature() const
+{
     return QFile::exists(msi_ec_cpu_realtime_temperature);
 }
-int MsiEc::getCPURealtimeTemperature() const {
+int MsiEc::getCPURealtimeTemperature() const
+{
     return readFile(msi_ec_cpu_realtime_temperature).toInt();
 }
 
 // cpu/realtime_fan_speed 0-100 (percent)
-bool MsiEc::hasCPURealtimeFanSpeed() const {
+bool MsiEc::hasCPURealtimeFanSpeed() const
+{
     return QFile::exists(msi_ec_cpu_realtime_fan_speed);
 }
-int MsiEc::getCPURealtimeFanSpeed() const {
+int MsiEc::getCPURealtimeFanSpeed() const
+{
     return readFile(msi_ec_cpu_realtime_fan_speed).toInt();
 }
 
 // cpu/basic_fan_speed 0-100 (percent)
-bool MsiEc::hasCPUBasicFanSpeed() const {
+bool MsiEc::hasCPUBasicFanSpeed() const
+{
     return QFile::exists(msi_ec_cpu_basic_fan_speed);
 }
-int MsiEc::getCPUBasicFanSpeed() const {
+int MsiEc::getCPUBasicFanSpeed() const
+{
     return readFile(msi_ec_cpu_basic_fan_speed).toInt();
 }
-void MsiEc::setCPUBasicFanSpeed(int value) const {
+void MsiEc::setCPUBasicFanSpeed(int value) const
+{
     writeFile(msi_ec_cpu_basic_fan_speed, QString::number(value));
 }
 
 //////////////// GPU ////////////////
 
 // gpu/realtime_temperature 0-100 (celsius scale)
-bool MsiEc::hasGPURealtimeTemperature() const {
+bool MsiEc::hasGPURealtimeTemperature() const
+{
     return QFile::exists(msi_ec_gpu_realtime_temperature);
 }
-int MsiEc::getGPURealtimeTemperature() const {
+int MsiEc::getGPURealtimeTemperature() const
+{
     return readFile(msi_ec_gpu_realtime_temperature).toInt();
 }
 
 // gpu/realtime_fan_speed 0-100 (percent)
-bool MsiEc::hasGPURealtimeFanSpeed() const {
+bool MsiEc::hasGPURealtimeFanSpeed() const
+{
     return QFile::exists(msi_ec_gpu_realtime_fan_speed);
 }
-int MsiEc::getGPURealtimeFanSpeed() const {
+int MsiEc::getGPURealtimeFanSpeed() const
+{
     return readFile(msi_ec_gpu_realtime_fan_speed).toInt();
 }
 
 //////////////// Charge control ////////////////
 
 // BAT1/charge_control_start_threshold 0-100 (percent)
-bool MsiEc::hasBatteryStartThreshold() const {
+bool MsiEc::hasBatteryStartThreshold() const
+{
     return QFile::exists(msi_ec_bat1_start_threshold);
 }
-int MsiEc::getBatteryStartThreshold() const {
+int MsiEc::getBatteryStartThreshold() const
+{
     return readFile(msi_ec_bat1_start_threshold).toInt();
 }
-void MsiEc::setBatteryStartThreshold(int value) const {
+void MsiEc::setBatteryStartThreshold(int value) const
+{
     writeFile(msi_ec_bat1_start_threshold, QString::number(value));
 }
 
 // BAT1/charge_control_end_threshold 0-100 (percent)
-bool MsiEc::hasBatteryEndThreshold() const {
+bool MsiEc::hasBatteryEndThreshold() const
+{
     return QFile::exists(msi_ec_bat1_end_threshold);
 }
-int MsiEc::getBatteryEndThreshold() const {
+int MsiEc::getBatteryEndThreshold() const
+{
     return readFile(msi_ec_bat1_end_threshold).toInt();
 }
-void MsiEc::setBatteryEndThreshold(int value) const {
+void MsiEc::setBatteryEndThreshold(int value) const
+{
     writeFile(msi_ec_bat1_end_threshold, QString::number(value));
 }
 
 // BAT1/capacity 0-100 (percent)
-bool MsiEc::hasBatteryCapacity() const {
+bool MsiEc::hasBatteryCapacity() const
+{
     return QFile::exists(msi_ec_bat1_capacity);
 }
 
-int MsiEc::getBatteryCapacity() const {
+int MsiEc::getBatteryCapacity() const
+{
     return readFile(msi_ec_bat1_capacity).toInt();
 }
 
 // BAT1/status 0-100 (percent)
-bool MsiEc::hasBatteryStatus() const {
+bool MsiEc::hasBatteryStatus() const
+{
     return QFile::exists(msi_ec_bat1_status);
 }
 
-QString MsiEc::getBatteryStatus() const {
+QString MsiEc::getBatteryStatus() const
+{
     return readFile(msi_ec_bat1_status);
 }
 
 //////////////// Keyboard Backlight ////////////////
 
 // kbd_backlight/brightness 0-3
-bool MsiEc::hasKeyboardBacklightBrightness() const {
+bool MsiEc::hasKeyboardBacklightBrightness() const
+{
     return QFile::exists(msi_ec_kbd_backlight_brightness);
 }
-int MsiEc::getKeyboardBacklightBrightness() const {
+int MsiEc::getKeyboardBacklightBrightness() const
+{
     return readFile(msi_ec_kbd_backlight_brightness).toInt();
 }
-void MsiEc::setKeyboardBacklightBrightness(int value) const {
+void MsiEc::setKeyboardBacklightBrightness(int value) const
+{
     writeFile(msi_ec_kbd_backlight_brightness, QString::number(value));
 }

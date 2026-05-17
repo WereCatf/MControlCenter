@@ -27,30 +27,37 @@ QString ioFile = ec_sys_file;
 
 ReadWrite::ReadWrite() = default;
 
-QByteArray ReadWrite::readFromFile() const {
+QByteArray ReadWrite::readFromFile() const
+{
     if (QFile file(ioFile); file.open(QIODevice::ReadOnly))
         return file.readAll();
     return {};
 }
 
-void ReadWrite::writeToFile(const int pos, BYTE value) const {
+void ReadWrite::writeToFile(const int pos, BYTE value) const
+{
     std::ofstream file(ioFile.toStdString(), std::ios::in | std::ios::out | std::ios::binary);
-    if (file.is_open()) {
+    if (file.is_open())
+    {
         file.seekp(pos);
         file << value;
     }
 }
 
-bool ReadWrite::isAcpiEc() const {
-    if (QFile::exists(acpi_ec_file)) {
+bool ReadWrite::isAcpiEc() const
+{
+    if (QFile::exists(acpi_ec_file))
+    {
         ioFile = acpi_ec_file;
         return true;
     }
     return false;
 }
 
-bool ReadWrite::isEcSys() const {
-    if (QFile::exists(ec_sys_file)) {
+bool ReadWrite::isEcSys() const
+{
+    if (QFile::exists(ec_sys_file))
+    {
         ioFile = ec_sys_file;
         return true;
     }

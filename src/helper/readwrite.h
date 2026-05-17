@@ -21,8 +21,10 @@
 
 #include <QByteArray>
 
-class ReadWrite {
+class ReadWrite
+{
     using BYTE = unsigned char;
+
 public:
     ReadWrite();
     QByteArray readFromFile() const;

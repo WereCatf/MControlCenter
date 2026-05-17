@@ -27,26 +27,32 @@
 
 ReadWrite rw;
 
-void Helper::quit() const {
+void Helper::quit() const
+{
     QTimer::singleShot(0, QCoreApplication::instance(), &QCoreApplication::quit);
 }
 
-QByteArray Helper::getData() const {
+QByteArray Helper::getData() const
+{
     return rw.readFromFile();
 }
 
-void Helper::putValue(const int &address, const int &value) const {
+void Helper::putValue(const int &address, const int &value) const
+{
     if (value >= 0 && value <= 255)
         rw.writeToFile(address, value);
     else
         fprintf(stderr, "tried to input invalid value. Address: %d, value: %d\n", address, value);
 }
 
-bool Helper::isEcSysModuleLoaded() const {
-    if (rw.isEcSys()) {
+bool Helper::isEcSysModuleLoaded() const
+{
+    if (rw.isEcSys())
+    {
         return true;
     }
-    if (rw.isAcpiEc()) {
+    if (rw.isAcpiEc())
+    {
         fprintf(stderr, "%s\n", qPrintable("The acpi_ec kernel module is loaded"));
         return true;
     }
@@ -54,7 +60,8 @@ bool Helper::isEcSysModuleLoaded() const {
     return false;
 }
 
-bool Helper::loadEcSysModule() const {
+bool Helper::loadEcSysModule() const
+{
     fprintf(stderr, "%s\n", qPrintable("Trying to load the ec_sys kernel module"));
     auto *process = new QProcess();
     process->start("sh", QStringList() << "-c" << "/usr/sbin/modprobe ec_sys write_support=1 2>&1");
@@ -66,7 +73,8 @@ bool Helper::loadEcSysModule() const {
     return false;
 }
 
-int main(int argc, char *argv[]) {
+int main(int argc, char *argv[])
+{
     QCoreApplication a(argc, argv);
 
     QObject obj;
@@ -79,7 +87,8 @@ int main(int argc, char *argv[]) {
     auto *helperMsiEc = new MsiEc(&objMsiEc);
     QDBusConnection::systemBus().registerObject("/msi_ec", &objMsiEc);
 
-    if (!QDBusConnection::systemBus().registerService(SERVICE_NAME)) {
+    if (!QDBusConnection::systemBus().registerService(SERVICE_NAME))
+    {
         fprintf(stderr, "%s\n", qPrintable(QDBusConnection::systemBus().lastError().message()));
         exit(1);
     }

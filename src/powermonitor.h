@@ -21,7 +21,8 @@
 
 #include <QObject>
 
-enum class PowerProfile {
+enum class PowerProfile
+{
     Performance,
     Balanced,
     Silent,
@@ -29,7 +30,8 @@ enum class PowerProfile {
     Unknown
 };
 
-class PowerMonitor : public QObject {
+class PowerMonitor : public QObject
+{
     Q_OBJECT
 public:
     PowerMonitor();

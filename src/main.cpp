@@ -21,15 +21,18 @@
 #include <QTranslator>
 #include <QDBusConnectionInterface>
 
-int main(int argc, char *argv[]) {
+int main(int argc, char *argv[])
+{
     const QString serviceName = "io.github.dmitry_s93.MControlCenter";
 
-    if (QDBusConnection::sessionBus().interface()->isServiceRegistered(serviceName)) {
+    if (QDBusConnection::sessionBus().interface()->isServiceRegistered(serviceName))
+    {
         fprintf(stderr, "Another instance of the application is already running\n");
         return 0;
     }
 
-    if (!QDBusConnection::sessionBus().registerService(serviceName)) {
+    if (!QDBusConnection::sessionBus().registerService(serviceName))
+    {
         fprintf(stderr, "Failed to register D-Bus service\n");
         return 1;
     }
@@ -38,9 +41,11 @@ int main(int argc, char *argv[]) {
 
     QTranslator translator;
     const QStringList uiLanguages = QLocale::system().uiLanguages();
-    for (const QString &locale: uiLanguages) {
+    for (const QString &locale : uiLanguages)
+    {
         const QString baseName = "lang_" + QLocale(locale).name();
-        if (translator.load(":/translations/" + baseName)) {
+        if (translator.load(":/translations/" + baseName))
+        {
             QApplication::installTranslator(&translator);
             break;
         }

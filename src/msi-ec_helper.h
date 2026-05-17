@@ -23,7 +23,8 @@
 #include <QtCore/QObject>
 #include <QtDBus/QDBusInterface>
 
-class MsiEcHelper : public QObject {
+class MsiEcHelper : public QObject
+{
     Q_OBJECT
 public:
     MsiEcHelper();

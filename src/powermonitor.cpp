@@ -22,14 +22,17 @@
 
 PowerMonitor::PowerMonitor() = default;
 
-bool PowerMonitor::connectToUpower() {
-    if(isUPowerConnected) {
+bool PowerMonitor::connectToUpower()
+{
+    if (isUPowerConnected)
+    {
         return true;
     }
 
     auto bus = QDBusConnection::systemBus();
 
-    if (!bus.interface()->isServiceRegistered("org.freedesktop.UPower")) {
+    if (!bus.interface()->isServiceRegistered("org.freedesktop.UPower"))
+    {
         return false;
     }
 
@@ -39,39 +42,41 @@ bool PowerMonitor::connectToUpower() {
         "org.freedesktop.DBus.Properties",
         "PropertiesChanged",
         this,
-        SLOT(onChargerStateChanged(QString,QVariantMap,QStringList))
-        );
+        SLOT(onChargerStateChanged(QString, QVariantMap, QStringList)));
     isUPowerConnected = ok;
     return ok;
 }
 
-void PowerMonitor::disconnectFromUpower() {
-    if(isUPowerConnected) {
+void PowerMonitor::disconnectFromUpower()
+{
+    if (isUPowerConnected)
+    {
         QDBusConnection::systemBus().disconnect(
             "org.freedesktop.UPower",
             "/org/freedesktop/UPower/devices/DisplayDevice",
             "org.freedesktop.DBus.Properties",
             "PropertiesChanged",
             this,
-            SLOT(onChargerStateChanged(QString,QVariantMap,QStringList))
-            );
+            SLOT(onChargerStateChanged(QString, QVariantMap, QStringList)));
         isUPowerConnected = false;
     }
 }
 
-void PowerMonitor::queryChargerState() {
-    if (isUPowerConnected) {
+void PowerMonitor::queryChargerState()
+{
+    if (isUPowerConnected)
+    {
         QDBusInterface iface(
             "org.freedesktop.UPower",
             "/org/freedesktop/UPower/devices/DisplayDevice",
             "org.freedesktop.DBus.Properties",
-            QDBusConnection::systemBus()
-            );
+            QDBusConnection::systemBus());
 
         QDBusReply<QVariant> reply =
             iface.call("Get", "org.freedesktop.UPower.Device", "State");
 
-        if (!reply.isValid()) {
+        if (!reply.isValid())
+        {
             return;
         }
 
@@ -85,7 +90,8 @@ void PowerMonitor::queryChargerState() {
 void PowerMonitor::onChargerStateChanged(
     const QString &interface,
     const QVariantMap &changedProps,
-    const QStringList &invalidatedProps) {
+    const QStringList &invalidatedProps)
+{
     Q_UNUSED(invalidatedProps);
 
     if (interface != "org.freedesktop.UPower.Device")
@@ -100,29 +106,34 @@ void PowerMonitor::onChargerStateChanged(
     emit currentChargerState(connected);
 }
 
-bool PowerMonitor::parseChargerState(uint state) const {
-    switch (state) {
-        case 1: // Charging
-        case 4: // Fully charged
-        case 5: // Pending charge
-            return true;
+bool PowerMonitor::parseChargerState(uint state) const
+{
+    switch (state)
+    {
+    case 1: // Charging
+    case 4: // Fully charged
+    case 5: // Pending charge
+        return true;
 
-        case 2: // Discharging
-        case 3: // Empty
-        case 6: // Pending discharge
-        default:
-            return false;
+    case 2: // Discharging
+    case 3: // Empty
+    case 6: // Pending discharge
+    default:
+        return false;
     }
 }
 
-bool PowerMonitor::connectToPowerProfiles() {
-    if (isPowerProfileConnected) {
+bool PowerMonitor::connectToPowerProfiles()
+{
+    if (isPowerProfileConnected)
+    {
         return true;
     }
 
     auto bus = QDBusConnection::systemBus();
 
-    if (!bus.interface()->isServiceRegistered("net.hadess.PowerProfiles")) {
+    if (!bus.interface()->isServiceRegistered("net.hadess.PowerProfiles"))
+    {
         return false;
     }
 
@@ -132,40 +143,42 @@ bool PowerMonitor::connectToPowerProfiles() {
         "org.freedesktop.DBus.Properties",
         "PropertiesChanged",
         this,
-        SLOT(onPowerProfileChanged(QString,QVariantMap,QStringList))
-        );
+        SLOT(onPowerProfileChanged(QString, QVariantMap, QStringList)));
 
     isPowerProfileConnected = ok;
     return ok;
 }
 
-void PowerMonitor::disconnectFromPowerProfiles() {
-    if (isPowerProfileConnected) {
+void PowerMonitor::disconnectFromPowerProfiles()
+{
+    if (isPowerProfileConnected)
+    {
         QDBusConnection::systemBus().disconnect(
             "net.hadess.PowerProfiles",
             "/org/freedesktop/UPower/PowerProfiles",
             "org.freedesktop.DBus.Properties",
             "PropertiesChanged",
             this,
-            SLOT(onPowerProfileChanged(QString,QVariantMap,QStringList))
-            );
+            SLOT(onPowerProfileChanged(QString, QVariantMap, QStringList)));
         isPowerProfileConnected = false;
     }
 }
 
-void PowerMonitor::queryPowerProfile() {
-    if (isPowerProfileConnected) {
+void PowerMonitor::queryPowerProfile()
+{
+    if (isPowerProfileConnected)
+    {
         QDBusInterface iface(
             "net.hadess.PowerProfiles",
             "/org/freedesktop/UPower/PowerProfiles",
             "org.freedesktop.DBus.Properties",
-            QDBusConnection::systemBus()
-            );
+            QDBusConnection::systemBus());
 
         QDBusReply<QVariant> reply =
             iface.call("Get", "org.freedesktop.UPower.PowerProfiles", "ActiveProfile");
 
-        if (!reply.isValid()) {
+        if (!reply.isValid())
+        {
             return;
         }
 
@@ -180,7 +193,8 @@ void PowerMonitor::queryPowerProfile() {
 void PowerMonitor::onPowerProfileChanged(
     const QString &interface,
     const QVariantMap &changed,
-    const QStringList &invalidatedProps) {
+    const QStringList &invalidatedProps)
+{
     Q_UNUSED(invalidatedProps);
 
     if (interface != "org.freedesktop.UPower.PowerProfiles")
@@ -196,7 +210,8 @@ void PowerMonitor::onPowerProfileChanged(
     emit currentPowerProfile(profile);
 }
 
-PowerProfile PowerMonitor::parsePowerProfile(const QString &profile) {
+PowerProfile PowerMonitor::parsePowerProfile(const QString &profile)
+{
     if (profile == "performance")
         return PowerProfile::Performance;
     if (profile == "balanced")

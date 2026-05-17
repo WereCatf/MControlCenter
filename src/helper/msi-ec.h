@@ -28,7 +28,8 @@
 /**
  * Interface for [msi-ec by BeardOverflow](https://github.com/BeardOverflow/msi-ec/)
  */
-class MsiEc : public QDBusAbstractAdaptor {
+class MsiEc : public QDBusAbstractAdaptor
+{
     Q_OBJECT
     Q_CLASSINFO("D-Bus Interface", INTERFACE_NAME_MSI_EC)
 public:
