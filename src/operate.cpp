@@ -634,6 +634,7 @@ void Operate::loadSettings() const
 
 void Operate::handleWakeEvent() const
 {
+    updateEcData();
     loadSettings();
 }
 
